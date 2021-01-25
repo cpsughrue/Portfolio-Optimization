@@ -5,7 +5,7 @@ import numpy as np
 import math
 import cvxpy as cp
 
-#returns json data
+#working on implementation that allows user to chose the function
 def gather_data(ticker_symbol, AlphaVantage_Key):
     '''
     :type stock: str
@@ -30,7 +30,7 @@ def clean_data(json_file):
     #converts column of pandas DataFrame to np.array(dtype = float, ndim = 1)
     adjusted_close = data_df.loc[:,'5. adjusted close'].to_numpy().astype(np.float)
 
-    #calculated percent change between adjusted closing price and reshapes np.array
+    #calculates percent change and reshapes np.array
     pct_change = (adjusted_close[:-1] / adjusted_close[1:]) - 1
     return np.reshape(pct_change, (1, len(pct_change)))
 
