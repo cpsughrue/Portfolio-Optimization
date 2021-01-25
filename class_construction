@@ -49,7 +49,7 @@ class Portfolio:
         '''
         pass
 
-    def max_sharpe_opt(self, risk_free_proxy = 'BIL', allow_shorts = False):
+    def max_sharpe_opt(self, risk_free = 'BIL', allow_shorts = False):
         '''
         :type risk_free_proxy: str
         :type allow_shorts: Boolean
@@ -58,7 +58,7 @@ class Portfolio:
 
         matrix_of_returns = calc_matrix_of_returns(self.curr_pf)
         cov_matrix, expected_returns = statistics(matrix_of_returns, self.list_pf)
-        risk_free_rate = np.average(stock_return(risk_free_proxy, self.AlphaVantage_Key))
+        risk_free_rate = np.average(stock_return(risk_free, self.AlphaVantage_Key))
         num_assets = len(self.list_pf)
 
         w = cp.Variable(num_assets)
