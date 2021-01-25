@@ -55,30 +55,30 @@ class Portfolio:
         :type allow_shorts: Boolean
         :treturn ndarray(dtype = float, ndim = 1)
         '''
-        #calculate necessary data
+
         matrix_of_returns = calc_matrix_of_returns(self.curr_pf)
         cov_matrix, expected_returns = statistics(matrix_of_returns, self.list_pf)
         risk_free_rate = np.average(stock_return(risk_free_proxy, self.AlphaVantage_Key))
         num_assets = len(self.list_pf)
-        #declare variables
+
         w = cp.Variable(num_assets)
         k = cp.Variable()
-        #declare objective
+
         function = cp.quad_form(w, cov_matrix)
         objective = cp.Minimize(function)
-        #determine additional constraints
+
         new_constraints = []
         if allow_shorts == False:
             lower_bound = np.array([0] * num_assets)
             new_constraints = [w >= lower_bound]
-        #declare constraints
+
         constraints = [(expected_returns - risk_free_rate).T * w == 1,
                         cp.sum(w) == k,
                         k >= 0] + new_constraints
-        #solve
+
         problem = cp.Problem(objective, constraints)
         problem.solve()
-        #convert ouput to weights
+
         weights = (w.value / k.value).round(4)
         return weights
 
