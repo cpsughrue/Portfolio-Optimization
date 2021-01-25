@@ -26,8 +26,10 @@ def clean_data(json_file):
     #converts data in json file to pandas DataFrame
     data = json_file.json()
     data_df = pd.DataFrame.from_dict(data['Monthly Adjusted Time Series'], orient = 'index')
+
     #converts column of pandas DataFrame to np.array(dtype = float, ndim = 1)
     adjusted_close = data_df.loc[:,'5. adjusted close'].to_numpy().astype(np.float)
+
     #calculated percent change between adjusted closing price and reshapes np.array
     pct_change = (adjusted_close[:-1] / adjusted_close[1:]) - 1
     return np.reshape(pct_change, (1, len(pct_change)))
@@ -49,10 +51,12 @@ def calc_matrix_of_returns(portfolio):
     '''
     num_row = len(portfolio)
     num_column = 0
+
     #determine number of columns needed for matrix initialization
     for stock in portfolio:
         if stock.returns.shape[1] > num_column:
             num_column = stock.returns.shape[1]
+
     #initialize and populate matrix of returns
     matrix_of_returns = np.full((num_row, num_column), np.nan)
     for index, stock in enumerate(portfolio):
@@ -69,12 +73,13 @@ def statistics(matrix_of_returns, list_of_stocks):
     #each stock is represented by a row in numpy array
     #numpy array must be transposed in order to represent data in tabular format
     portfolio_df = pd.DataFrame(data = matrix_of_returns.T, columns = list_of_stocks)
+
     #calculate covariance matrix and expected return for each stock
     covariance_matrix = portfolio_df.cov().to_numpy()
     expected_returns = np.nanmean(matrix_of_returns, axis = 1)
     return covariance_matrix, expected_returns
 
-#no longer in use but still functional
+#no longer in use but still functions correctly
 def append_matrix_of_returns(curr_matrix, addition):
     '''
     :type curr_matrix: ndrray(dtype = float, ndim = 2)
