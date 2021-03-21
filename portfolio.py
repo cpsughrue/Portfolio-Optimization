@@ -106,7 +106,7 @@ class Portfolio:
             lower_bound = np.array([0] * num_assets)
             new_constraints = [w >= lower_bound]
 
-        constraints = [(expected_returns - risk_free_rate).T * w == 1,
+        constraints = [(expected_returns - risk_free_rate).T @ w == 1,
                         cp.sum(w) == k,
                         k >= 0] + new_constraints
 
