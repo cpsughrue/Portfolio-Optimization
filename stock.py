@@ -5,7 +5,7 @@ class Stock:
 
     def __init__(self, ticker_symbol, AlphaVantage_Key):
         ''' 
-        :type ticker: str
+        :type ticker_symbol: str
         :type returns: np.array(dtype = float, ndim = 1)
         :type AlphaVantage_Key: str
         '''
